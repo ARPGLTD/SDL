@@ -26,7 +26,7 @@ sdlConfig.cflags = [
     .unsafeFlags(["-x", "objective-c", "-fobjc-weak"], .when(platforms: [.macOS])),
 ]
 
-sdlFlags.sourcePaths = [
+sdlConfig.sourcePaths = [
     "src/atomic",
     "src/audio/coreaudio",
     "src/audio/disk",
