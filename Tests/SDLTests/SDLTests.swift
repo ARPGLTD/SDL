@@ -12,13 +12,12 @@ final class SDLTests: XCTestCase {
     
     func testSDLInit() throws {
         let rv = SDL_Init(SDL_INIT_VIDEO)
-        XCTAssert(rv >= 0, "SDL_Init(SDL_INIT_VIDEO) failed")
+        XCTAssert(rv >= 0, String(cString: SDL_GetError()))
     }
 
-    
     func testSDLWindow() throws {
         let rv = SDL_Init(SDL_INIT_VIDEO)
-        XCTAssert(rv >= 0, "SDL_Init(SDL_INIT_VIDEO) failed")
+        XCTAssert(rv >= 0, String(cString: SDL_GetError()))
 
         let window = SDL_CreateWindow("Hello SDL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_RESIZABLE.rawValue)
         XCTAssertNotNil(window)
