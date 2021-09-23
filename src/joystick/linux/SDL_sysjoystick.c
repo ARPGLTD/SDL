@@ -38,6 +38,7 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <stdlib.h>
 #include <linux/joystick.h>
 
 #include "SDL_hints.h"
