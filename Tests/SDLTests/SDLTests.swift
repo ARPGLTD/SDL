@@ -34,4 +34,9 @@ final class SDLTests: XCTestCase {
         
         SDL_DestroyWindow(window)
     }
+    
+    func testVulcanLoadLibrary() throws {
+        let rv = SDL_Vulkan_LoadLibrary(nil)
+        XCTAssertEqual(rv, 0, String(cString: SDL_GetError()))
+    }
 }
