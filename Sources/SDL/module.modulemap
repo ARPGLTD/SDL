@@ -1,4 +1,0 @@
-module SDL [extern_c] {
-    umbrella header "Include/SDL.h"
-    export *
-}
