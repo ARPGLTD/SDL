@@ -30,6 +30,7 @@
 
 #include <X11/keysym.h>
 #include <X11/XKBlib.h>
+#include <stdio.h>
 
 #include "../../events/imKStoUCS.h"
 
