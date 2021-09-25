@@ -6,6 +6,7 @@ import PackageDescription
 struct TargetConfiguration {
     var cflags : [CSetting] = []
     var lflags : [LinkerSetting] = []
+    var libraryType : Product.Library.LibraryType?
     var sourcePaths : [String] = []
     var excludePaths : [String] = []
 }
@@ -25,6 +26,8 @@ sdlConfig.cflags = [
     .unsafeFlags(["-x", "objective-c", "-fno-objc-arc"], .when(platforms: [.macOS])),
     .unsafeFlags(["-x", "objective-c", "-fobjc-weak"], .when(platforms: [.macOS])),
 ]
+
+sdlConfig.libraryType = .dynamic
 
 sdlConfig.sourcePaths = [
     "src/atomic",
@@ -353,7 +356,7 @@ let package = Package(
     name: "SDL",
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
-        .library(name: "SDL", type: .dynamic, targets: ["SDL"])
+        .library(name: "SDL", type: sdlConfig.libraryType, targets: ["SDL"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
