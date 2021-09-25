@@ -224,6 +224,130 @@ sdlConfig.excludePaths = [
 ]
 
 #elseif os(Windows)
+
+sdlConfig.cflags = [
+    .define("SDL_VIDEO_OPENGL", to: "0"),
+    .define("SDL_VIDEO_OPENGL_ES2", to: "0"),
+    .define("SDL_VIDEO_OPENGL_EGL", to: "0"),
+    .define("SDL_VIDEO_OPENGL_CGL", to: "0"),
+    .define("SDL_VIDEO_OPENGL_GLX", to: "0"),
+    .define("SDL_VIDEO_RENDER_OGL", to: "0"),
+    .define("SDL_VIDEO_RENDER_OGL_ES2", to: "0"),
+//    .unsafeFlags(["-x", "objective-c", "-fno-objc-arc"], .when(platforms: [.macOS])),
+//    .unsafeFlags(["-x", "objective-c", "-fobjc-weak"], .when(platforms: [.macOS])),
+//    .define("SDL_VIDEO_RENDER_D3D11", to: "0"),
+    .unsafeFlags(["-msse3"]),
+]
+
+sdlConfig.lflags = [
+    .linkedLibrary("swiftCore"),
+    .linkedLibrary("KERNEL32"),
+    .linkedLibrary("USER32"),
+    .linkedLibrary("WINMM"),
+    .linkedLibrary("OLE32"),
+    .linkedLibrary("SETUPAPI"),
+    .linkedLibrary("AdvAPI32"),
+    .linkedLibrary("IMM32"),
+    .linkedLibrary("ONECORE"),
+    .linkedLibrary("GDI32"),
+]
+
+sdlConfig.sourcePaths = [
+    "src/atomic",
+    "src/audio/disk",
+    "src/audio/directsound",
+    "src/audio/dummy",
+    "src/audio/wasapi",
+    "src/audio/winmm",
+    // find src/audio -name \*.c -depth 1 | sort -f | xargs -n 1 printf '"%s",\n'
+    "src/audio/SDL_audio.c",
+    "src/audio/SDL_audiocvt.c",
+    "src/audio/SDL_audiodev.c",
+    "src/audio/SDL_audiotypecvt.c",
+    "src/audio/SDL_mixer.c",
+    "src/audio/SDL_wave.c",
+    "src/core/windows",
+    "src/cpuinfo",
+    "src/dynapi/SDL_dynapi.c",
+    "src/events",
+    "src/file/SDL_rwops.c",
+    "src/filesystem/windows",
+    "src/haptic/dummy",
+    "src/haptic/windows",
+    "src/haptic/SDL_haptic.c",
+    "src/hidapi/SDL_hidapi.c",
+    "src/joystick/dummy",
+    "src/joystick/hidapi",
+    "src/joystick/steam",
+    "src/joystick/virtual",
+    "src/joystick/windows",
+    // find src/joystick -name \*.c -depth 1 | sort -f | xargs -n 1 printf '"%s",\n'
+    "src/joystick/SDL_gamecontroller.c",
+    "src/joystick/SDL_joystick.c",
+    "src/libm",
+    "src/loadso/dummy",
+    "src/loadso/windows",
+    "src/locale/windows",
+    "src/locale/SDL_locale.c",
+    "src/misc/windows",
+    "src/misc/SDL_url.c",
+    "src/power/windows",
+    "src/power/SDL_power.c",
+    "src/render/direct3d",
+    "src/render/direct3d11",
+    "src/render/opengl",
+    "src/render/opengles",
+    "src/render/opengles2",
+    "src/render/software",
+    "src/render/SDL_d3dmath.c",
+    "src/render/SDL_render.c",
+    "src/render/SDL_yuv_sw.c",
+    "src/sensor/dummy",
+    "src/sensor/windows",
+    "src/sensor/SDL_sensor.c",
+    "src/stdlib",
+    "src/timer/windows",
+    "src/timer/SDL_timer.c",
+    "src/thread/generic/SDL_syscond.c",
+    "src/thread/windows",
+    "src/thread/SDL_thread.c",
+    "src/video/dummy",
+    "src/video/khronos",
+    "src/video/windows",
+    "src/video/winrt",
+    "src/video/yuv2rgb/yuv_rgb.c",
+    "src/video/SDL_blit.c",
+    "src/video/SDL_blit_0.c",
+    "src/video/SDL_blit_1.c",
+    "src/video/SDL_blit_A.c",
+    "src/video/SDL_blit_auto.c",
+    "src/video/SDL_blit_copy.c",
+    "src/video/SDL_blit_N.c",
+    "src/video/SDL_blit_slow.c",
+    "src/video/SDL_bmp.c",
+    "src/video/SDL_clipboard.c",
+    "src/video/SDL_fillrect.c",
+    "src/video/SDL_pixels.c",
+    "src/video/SDL_rect.c",
+    "src/video/SDL_RLEaccel.c",
+    "src/video/SDL_shape.c",
+    "src/video/SDL_stretch.c",
+    "src/video/SDL_surface.c",
+    "src/video/SDL_video.c",
+    "src/video/SDL_vulkan_utils.c",
+    "src/video/SDL_yuv.c",
+    "src/SDL_assert.c",
+    "src/SDL_dataqueue.c",
+    "src/SDL_error.c",
+    "src/SDL_hints.c",
+    "src/SDL_log.c",
+    "src/SDL.c",
+]
+
+sdlConfig.excludePaths = [
+//    "src/thread/generic/SDL_sysmutex.c",
+]
+
 #endif
 
 let package = Package(
@@ -245,9 +369,10 @@ let package = Package(
             sources: sdlConfig.sourcePaths,
             publicHeadersPath: "Include",
             cSettings: sdlConfig.cflags, linkerSettings: sdlConfig.lflags
-            ),
+        ),
         .testTarget(
             name: "SDLTests",
-            dependencies: ["SDL"]),
+            dependencies: ["SDL"]
+        )
     ]
 )
