@@ -1,6 +1,15 @@
 import XCTest
 @testable import SDL
 
+extension RawRepresentable where RawValue : BinaryInteger {
+    typealias FlagsValue = UInt32
+
+    /// Returns platform specific flags values, which doesn't always match RawValue.
+    var flagsValue : FlagsValue {
+        FlagsValue(rawValue)
+    }
+}
+
 let SDL_WINDOWPOS_UNDEFINED = Int32(0x1FFF0000)
 
 final class SDLTests: XCTestCase {
@@ -19,7 +28,7 @@ final class SDLTests: XCTestCase {
         let rv = SDL_Init(SDL_INIT_VIDEO)
         XCTAssert(rv >= 0, String(cString: SDL_GetError()))
 
-        let window = SDL_CreateWindow("Hello SDL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_RESIZABLE.rawValue)
+        let window = SDL_CreateWindow("Hello SDL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_RESIZABLE.flagsValue)
         XCTAssertNotNil(window)
 
         var quit = false
