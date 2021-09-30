@@ -235,6 +235,7 @@ sdlConfig.cflags = [
     .define("SDL_VIDEO_RENDER_OGL_ES2", to: "0"),
     .define("SDL_VIDEO_DRIVER_WINRT", to: "0"),
     .define("SDL_VIDEO_RENDER_D3D11", to: "0"),
+    .define("DLL_EXPORT", to: "1"),
     .unsafeFlags(["-msse3"]),
 ]
 
