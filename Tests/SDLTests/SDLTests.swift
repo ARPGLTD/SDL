@@ -20,7 +20,7 @@ final class SDLTests: XCTestCase {
     }
     
     func testSDLInit() throws {
-        let rv = SDL_Init(SDL_INIT_VIDEO)
+        let rv = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)
         XCTAssert(rv >= 0, String(cString: SDL_GetError()))
     }
 
