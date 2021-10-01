@@ -120,7 +120,7 @@ sdlConfig.excludePaths = [
 #elseif os(Linux)
 
 sdlConfig.cflags = [
-    .define("USING_GENERATED_CONFIG_H", to: "1"),
+    .define("USING_SWIFT_PACKAGE_MANAGER", to: "1"),
     .define("_REENTRANT", to: "1"),
     .define("HAVE_LINUX_VERSION_H", to: "1"),
     .define("SDL_AUDIO_DRIVER_SNDIO", to: "1"),

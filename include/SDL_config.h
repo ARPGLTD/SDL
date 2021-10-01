@@ -19,6 +19,10 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
+#if defined(USING_SWIFT_PACKAGE_MANAGER)
+#include "SDL_config_swift.h"
+#else
+
 #ifndef SDL_config_h_
 #define SDL_config_h_
 
@@ -59,3 +63,5 @@
 #endif
 
 #endif /* SDL_config_h_ */
+
+#endif
