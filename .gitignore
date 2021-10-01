@@ -181,3 +181,5 @@ debian/tmp/
 
 # for Swift
 .build
+Sources/SDL/Include
+Sources/SDL/src
