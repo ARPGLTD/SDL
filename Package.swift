@@ -120,19 +120,34 @@ sdlConfig.excludePaths = [
 #elseif os(Linux)
 
 sdlConfig.cflags = [
-    .define("SDL_FILESYSTEM_UNIX", to: "1"),
-    .define("SDL_HAPTIC_LINUX", to: "1"),
-    .define("SDL_INPUT_LINUXEV", to: "1"),
-    .define("SDL_JOYSTICK_LINUX", to: "1"),
-    .define("SDL_TIMER_UNIX", to: "1"),
-    .define("SDL_VIDEO_DRIVER_X11", to: "1"),
-    .define("SDL_VIDEO_DRIVER_X11_SUPPORTS_GENERIC_EVENTS", to: "1"),
-    .define("SDL_VIDEO_DRIVER_X11_HAS_XKBKEYCODETOKEYSYM", to: "1"),
-    .define("HAVE_USR_INCLUDE_MALLOC_H", to: "1"),
-    .define("HAVE_STRING_H", to: "1"),
+    .define("USING_GENERATED_CONFIG_H", to: "1"),
+    .define("_REENTRANT", to: "1"),
+    .define("HAVE_LINUX_VERSION_H", to: "1"),
+    .define("SDL_AUDIO_DRIVER_SNDIO", to: "1"),
+    // .define("SDL_AUDIO_DRIVER_PULSEAUDIO", to: "1"),
+    // .define("SDL_FILESYSTEM_UNIX", to: "1"),
+    // .define("SDL_HAPTIC_LINUX", to: "1"),
+    // .define("SDL_INPUT_LINUXEV", to: "1"),
+    // .define("SDL_JOYSTICK_LINUX", to: "1"),
+    // .define("SDL_LOADSO_DLOPEN", to: "1"),
+    // .define("SDL_TIMER_UNIX", to: "1"),
+    // .define("SDL_VIDEO_DRIVER_X11", to: "1"),
+    // .define("SDL_VIDEO_DRIVER_X11_SUPPORTS_GENERIC_EVENTS", to: "1"),
+    // .define("SDL_VIDEO_DRIVER_X11_HAS_XKBKEYCODETOKEYSYM", to: "1"),
+    // .define("HAVE_USR_INCLUDE_MALLOC_H", to: "1"),
+    // .define("HAVE_STRING_H", to: "1"),
+    // .unsafeFlags(["-I/usr/include/dbus-1.0"]),
+    // from generated Makefile.
+    .unsafeFlags(["-mmmx", "-m3dnow", "-msse", "-msse2", "-msse3", "-Wall", "-fno-strict-aliasing"]),
+    .unsafeFlags(["-fvisibility=hidden", "-Wdeclaration-after-statement", "-Werror=declaration-after-statement"]),
+    .unsafeFlags(["-I/home/linuxbrew/.linuxbrew/Cellar/pulseaudio/14.2/include"]),
+    .unsafeFlags(["-I/home/linuxbrew/.linuxbrew/Cellar/dbus/1.12.20/include/dbus-1.0"]),
+    .unsafeFlags(["-I/home/linuxbrew/.linuxbrew/Cellar/dbus/1.12.20/lib/dbus-1.0/include"]),
+    .unsafeFlags(["-Isrc/hidapi/hidapi"]),
 ]
 
 sdlConfig.lflags = [
+    .linkedLibrary("pulse"),
     .linkedLibrary("X11"),
     .linkedLibrary("Xext"),
 ]
@@ -141,7 +156,10 @@ sdlConfig.sourcePaths = [
     "src/atomic",
     "src/audio/alsa",
     "src/audio/disk",
+    "src/audio/dsp",
     "src/audio/dummy",
+    "src/audio/pulseaudio",
+    "src/audio/sndio",
     // find src/audio -name \*.c -depth 1 | sort -f | xargs -n 1 printf '"%s",\n'
     "src/audio/SDL_audio.c",
     "src/audio/SDL_audiocvt.c",
@@ -158,6 +176,7 @@ sdlConfig.sourcePaths = [
     "src/filesystem/unix",
     "src/haptic/linux",
     "src/haptic/SDL_haptic.c",
+    "src/hidapi/SDL_hidapi.c",
     "src/joystick/dummy",
     "src/joystick/hidapi",
     "src/joystick/linux",
@@ -168,7 +187,7 @@ sdlConfig.sourcePaths = [
     "src/joystick/SDL_joystick.c",
     "src/libm",
     "src/loadso/dlopen",
-    "src/loadso/dummy",
+    // "src/loadso/dummy",
     "src/locale/unix",
     "src/locale/SDL_locale.c",
     "src/misc/unix",
@@ -176,6 +195,7 @@ sdlConfig.sourcePaths = [
     "src/power/linux",
     "src/power/SDL_power.c",
     "src/render/opengl",
+    "src/render/opengles2",
     "src/render/software",
     "src/render/SDL_d3dmath.c",
     "src/render/SDL_render.c",
@@ -201,6 +221,7 @@ sdlConfig.sourcePaths = [
     "src/video/SDL_blit_slow.c",
     "src/video/SDL_bmp.c",
     "src/video/SDL_clipboard.c",
+    "src/video/SDL_egl.c",
     "src/video/SDL_fillrect.c",
     "src/video/SDL_pixels.c",
     "src/video/SDL_rect.c",
@@ -220,7 +241,6 @@ sdlConfig.sourcePaths = [
 ]
 
 sdlConfig.excludePaths = [
-    "src/core/linux/SDL_fcitx.c",
 ]
 
 #elseif os(Windows)
