@@ -143,7 +143,7 @@ sdlConfig.cflags = [
     .unsafeFlags(["-I/home/linuxbrew/.linuxbrew/Cellar/pulseaudio/14.2/include"]),
     .unsafeFlags(["-I/home/linuxbrew/.linuxbrew/Cellar/dbus/1.12.20/include/dbus-1.0"]),
     .unsafeFlags(["-I/home/linuxbrew/.linuxbrew/Cellar/dbus/1.12.20/lib/dbus-1.0/include"]),
-    .unsafeFlags(["-Isrc/hidapi/hidapi"]),
+    // .unsafeFlags(["-Ihidapi/hidapi"]),
 ]
 
 sdlConfig.lflags = [
