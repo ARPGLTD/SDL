@@ -136,14 +136,11 @@ sdlConfig.cflags = [
     // .define("SDL_VIDEO_DRIVER_X11_HAS_XKBKEYCODETOKEYSYM", to: "1"),
     // .define("HAVE_USR_INCLUDE_MALLOC_H", to: "1"),
     // .define("HAVE_STRING_H", to: "1"),
-    // .unsafeFlags(["-I/usr/include/dbus-1.0"]),
-    // from generated Makefile.
+    // the following were derived from ./configure generated Makefile.
     .unsafeFlags(["-mmmx", "-m3dnow", "-msse", "-msse2", "-msse3", "-Wall", "-fno-strict-aliasing"]),
     .unsafeFlags(["-fvisibility=hidden", "-Wdeclaration-after-statement", "-Werror=declaration-after-statement"]),
-    .unsafeFlags(["-I/home/linuxbrew/.linuxbrew/Cellar/pulseaudio/14.2/include"]),
-    .unsafeFlags(["-I/home/linuxbrew/.linuxbrew/Cellar/dbus/1.12.20/include/dbus-1.0"]),
-    .unsafeFlags(["-I/home/linuxbrew/.linuxbrew/Cellar/dbus/1.12.20/lib/dbus-1.0/include"]),
-    // .unsafeFlags(["-Ihidapi/hidapi"]),
+    .unsafeFlags(["-I/home/linuxbrew/.linuxbrew/include/dbus-1.0"]),
+    .unsafeFlags(["-I/home/linuxbrew/.linuxbrew/lib/dbus-1.0/include"]),
 ]
 
 sdlConfig.lflags = [
@@ -245,6 +242,7 @@ sdlConfig.excludePaths = [
 
 #elseif os(Windows)
 
+// TODO:  ensure these are compatible with SDL_config_windows.h
 sdlConfig.cflags = [
     .define("SDL_VIDEO_OPENGL", to: "0"),
     .define("SDL_VIDEO_OPENGL_ES2", to: "0"),
