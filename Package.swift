@@ -2,6 +2,7 @@
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
+import Foundation
 
 struct TargetConfiguration {
     var cflags : [CSetting] = []
@@ -111,11 +112,11 @@ sdlConfig.sourcePaths = [
     "src/SDL.c",
 ]
 
-sdlConfig.excludePaths = [
-    "src/video/SDL_egl.c",
-    "src/video/cocoa/SDL_cocoaopengles.m",
-    "src/video/cocoa/SDL_cocoaopengl.m",
-]
+// sdlConfig.excludePaths = [
+//     "src/video/SDL_egl.c",
+//     "src/video/cocoa/SDL_cocoaopengles.m",
+//     "src/video/cocoa/SDL_cocoaopengl.m",
+// ]
 
 #elseif os(Linux)
 
@@ -235,9 +236,6 @@ sdlConfig.sourcePaths = [
     "src/SDL_hints.c",
     "src/SDL_log.c",
     "src/SDL.c",
-]
-
-sdlConfig.excludePaths = [
 ]
 
 #elseif os(Windows)
@@ -362,11 +360,43 @@ sdlConfig.sourcePaths = [
     "src/SDL.c",
 ]
 
-sdlConfig.excludePaths = [
-//    "src/thread/generic/SDL_sysmutex.c",
-]
-
 #endif
+
+// generate list of exclusions by subtraction.
+
+var cachedSources : [String] = {
+    let url = URL(fileURLWithPath: "./src.cache")
+    let text = String(data: (try? Data(contentsOf: url)) ?? Data(), encoding: .utf8)
+    return text?.components(separatedBy: .newlines) ?? []
+}()
+
+sdlConfig.excludePaths = {
+    // 1. don't exclude any explicitly included source paths.
+    // 2. don't exclude any source paths that are in explicitly included directories.
+    let fileManager = FileManager.default
+    func isDirectory(_ path : String) -> Bool {
+        var dir : ObjCBool = false
+        return fileManager.fileExists(atPath: path, isDirectory: &dir) && dir.boolValue
+    }
+    let sourcePaths = sdlConfig.sourcePaths
+    let sourceDirectories = sourcePaths.filter(isDirectory).map { $0 + "/" }
+    // print("sourceDirectories:")
+    // print(sourceDirectories.joined(separator: "\n"))
+    func inIncludedDirectory(_ path : String) -> Bool {
+        for dir in sourceDirectories {
+            if path.hasPrefix(dir) { return true }
+        }
+        return false
+    }
+    let sources = Set(sourcePaths)
+    return cachedSources.filter { path in
+        !path.isEmpty && !sources.contains(path) && !inIncludedDirectory(path)
+    }
+}()
+// print("sourcePaths:")
+// print(sdlConfig.sourcePaths.joined(separator: "\n"))
+// print("excludePaths:")
+// print(sdlConfig.excludePaths.joined(separator: "\n"))
 
 let package = Package(
     name: "SDL",
