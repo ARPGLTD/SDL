@@ -5,13 +5,14 @@ import PackageDescription
 import Foundation
 
 struct TargetConfiguration {
+    var name : String
     var cflags : [CSetting] = []
     var lflags : [LinkerSetting] = []
     var sourcePaths : [String] = []
     var excludePaths : [String] = []
 }
 
-var sdlConfig = TargetConfiguration()
+var sdlConfig = TargetConfiguration(name: "SDL")
 
 #if os(macOS)
 
@@ -363,6 +364,7 @@ sdlConfig.sourcePaths = [
 #endif
 
 // generate list of exclusions by subtraction.
+/// returns the file URL that contains this file, Package.swift.
 var packageURL : URL = {
     let processInfo = ProcessInfo.processInfo
     if let manifestPath = processInfo.environment["SWIFT_MANIFEST_PATH"] {
@@ -371,22 +373,25 @@ var packageURL : URL = {
     return URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
 }()
 
-var cachedSources : [String] = {
-    let url = URL(fileURLWithPath: "src.cache", relativeTo: packageURL)
+func cachedSources(targetURL: URL) -> [String] {
+    let url = URL(fileURLWithPath: "src.cache", relativeTo: targetURL)
     let text = String(data: (try? Data(contentsOf: url)) ?? Data(), encoding: .utf8)
     return text?.components(separatedBy: .newlines) ?? []
-}()
+}
 
-sdlConfig.excludePaths = {
+func excludePaths(config : TargetConfiguration) -> [String] {
     // 1. don't exclude any explicitly included source paths.
     // 2. don't exclude any source paths that are in explicitly included directories.
+    // currently this code is very sensitive to the current working directory.
+    let targetURL = URL(fileURLWithPath: "Sources/\(config.name)", relativeTo: packageURL)
+    // print("targetURL = \(targetURL.path)")
     let fileManager = FileManager.default
     func isDirectory(_ path : String) -> Bool {
         var dir : ObjCBool = false
-        let url = URL(fileURLWithPath: path, relativeTo: packageURL)
+        let url = URL(fileURLWithPath: path, relativeTo: targetURL).resolvingSymlinksInPath()
         return fileManager.fileExists(atPath: url.path, isDirectory: &dir) && dir.boolValue
     }
-    let sourcePaths = sdlConfig.sourcePaths
+    let sourcePaths = config.sourcePaths
     let sourceDirectories = sourcePaths.filter(isDirectory).map { $0 + "/" }
     // print("sourceDirectories:")
     // print(sourceDirectories.joined(separator: "\n"))
@@ -397,14 +402,16 @@ sdlConfig.excludePaths = {
         return false
     }
     let sources = Set(sourcePaths)
-    return cachedSources.filter { path in
-        !path.isEmpty && !sources.contains(path) && !inIncludedDirectory(path)
+    return cachedSources(targetURL: targetURL).filter { path in
+        return !path.isEmpty && !sources.contains(path) && !inIncludedDirectory(path)
     }
-}()
-// print("sourcePaths:")
-// print(sdlConfig.sourcePaths.joined(separator: "\n"))
-// print("excludePaths:")
-// print(sdlConfig.excludePaths.joined(separator: "\n"))
+}
+
+sdlConfig.excludePaths = excludePaths(config: sdlConfig)
+//print("sourcePaths:")
+//print(sdlConfig.sourcePaths.joined(separator: "\n"))
+//print("excludePaths:")
+//print(sdlConfig.excludePaths.joined(separator: "\n"))
 
 let package = Package(
     name: "SDL",
