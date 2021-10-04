@@ -374,6 +374,7 @@ sdlConfig.excludePaths = {
     // 1. don't exclude any explicitly included source paths.
     // 2. don't exclude any source paths that are in explicitly included directories.
     let fileManager = FileManager.default
+    print("currentDirectoryPath = \(fileManager.currentDirectoryPath)")
     func isDirectory(_ path : String) -> Bool {
         var dir : ObjCBool = false
         return fileManager.fileExists(atPath: path, isDirectory: &dir) && dir.boolValue
