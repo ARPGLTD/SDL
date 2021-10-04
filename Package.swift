@@ -407,6 +407,11 @@ func excludePaths(config : TargetConfiguration) -> [String] {
     }
 }
 
+// 	Quiet the warnings.
+sdlConfig.cflags += [
+    .unsafeFlags(["-Wno-everything"]),
+]
+
 sdlConfig.excludePaths = [
     "src.cache",
     "src/hidapi/testgui",
