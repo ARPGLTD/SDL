@@ -363,9 +363,16 @@ sdlConfig.sourcePaths = [
 #endif
 
 // generate list of exclusions by subtraction.
+var packageURL : URL = {
+    let processInfo = ProcessInfo.processInfo
+    if let manifestPath = processInfo.environment["SWIFT_MANIFEST_PATH"] {
+        return URL(fileURLWithPath: manifestPath).deletingLastPathComponent()
+    }
+    return URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+}()
 
 var cachedSources : [String] = {
-    let url = URL(fileURLWithPath: "./src.cache")
+    let url = URL(fileURLWithPath: "src.cache", relativeTo: packageURL)
     let text = String(data: (try? Data(contentsOf: url)) ?? Data(), encoding: .utf8)
     return text?.components(separatedBy: .newlines) ?? []
 }()
@@ -374,10 +381,10 @@ sdlConfig.excludePaths = {
     // 1. don't exclude any explicitly included source paths.
     // 2. don't exclude any source paths that are in explicitly included directories.
     let fileManager = FileManager.default
-    print("currentDirectoryPath = \(fileManager.currentDirectoryPath)")
     func isDirectory(_ path : String) -> Bool {
         var dir : ObjCBool = false
-        return fileManager.fileExists(atPath: path, isDirectory: &dir) && dir.boolValue
+        let url = URL(fileURLWithPath: path, relativeTo: packageURL)
+        return fileManager.fileExists(atPath: url.path, isDirectory: &dir) && dir.boolValue
     }
     let sourcePaths = sdlConfig.sourcePaths
     let sourceDirectories = sourcePaths.filter(isDirectory).map { $0 + "/" }
