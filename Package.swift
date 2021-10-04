@@ -407,7 +407,15 @@ func excludePaths(config : TargetConfiguration) -> [String] {
     }
 }
 
-sdlConfig.excludePaths = excludePaths(config: sdlConfig)
+sdlConfig.excludePaths = [
+    "src.cache",
+    "src/hidapi/testgui",
+    "Include/SDL_revision.h.cmake",
+    "Include/SDL_config.h.in",
+    "Include/SDL_config.h.cmake",
+]
+
+sdlConfig.excludePaths += excludePaths(config: sdlConfig)
 //print("sourcePaths:")
 //print(sdlConfig.sourcePaths.joined(separator: "\n"))
 //print("excludePaths:")

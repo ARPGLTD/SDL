@@ -448,7 +448,6 @@ src/video/yuv2rgb/yuv_rgb_std_func.h
 src/video/yuv2rgb/yuv_rgb.h
 src/video/SDL_bmp.c
 src/SDL_assert.c
-src/.DS_Store
 src/locale/dummy/SDL_syslocale.c
 src/locale/haiku/SDL_syslocale.cc
 src/locale/unix/SDL_syslocale.c
@@ -634,7 +633,6 @@ src/audio/dummy/SDL_dummyaudio.h
 src/audio/dummy/SDL_dummyaudio.c
 src/audio/os2/SDL_os2audio.c
 src/audio/os2/SDL_os2audio.h
-src/audio/.DS_Store
 src/audio/SDL_audio_c.h
 src/audio/pulseaudio/SDL_pulseaudio.h
 src/audio/pulseaudio/SDL_pulseaudio.c
