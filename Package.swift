@@ -367,12 +367,10 @@ sdlConfig.sourcePaths = [
 
 /// returns the file URL that contains this file, Package.swift.
 var packageURL : URL = {
-#if false
     let processInfo = ProcessInfo.processInfo
     if let manifestPath = processInfo.environment["SWIFT_PACKAGE_ROOT"] {
         return URL(fileURLWithPath: manifestPath)
     }
-#endif
     return URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
 }()
 
