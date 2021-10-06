@@ -404,7 +404,7 @@ func excludePaths(config : TargetConfiguration) -> [String] {
     // 1. don't exclude any explicitly included source paths.
     // 2. don't exclude any source paths that are in explicitly included directories.
     // currently this code is very sensitive to the current working directory.
-    print("packageURL = \(packageURL)")
+    // print("packageURL = \(packageURL)")
     let targetURL = URL(fileURLWithPath: "Sources/\(config.name)", relativeTo: packageURL)
     // print("targetURL = \(targetURL.path)")
     func isDirectory(_ path : String) -> Bool {
