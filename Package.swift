@@ -1,4 +1,4 @@
-// swift-tools-version:5.4
+// swift-tools-version:5.6
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -366,14 +366,7 @@ sdlConfig.sourcePaths = [
 // generate list of exclusions by subtraction.
 
 /// returns the file URL that contains this file, Package.swift.
-var packageURL : URL = {
-    let processInfo = ProcessInfo.processInfo
-    if let manifestPath = processInfo.environment["SWIFT_PACKAGE_ROOT"] {
-        return URL(fileURLWithPath: manifestPath)
-    }
-    return URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-}()
-
+var packageURL : URL = URL(fileURLWithPath: Context.packageDirectory)
 let fileManager = FileManager.default
 
 func find(_ name : String, base: URL? = nil) -> [String] {
