@@ -146,8 +146,7 @@ sdlConfig.cflags = [
     // the following were derived from ./configure generated Makefile.
     .unsafeFlags(["-mmmx", "-m3dnow", "-msse", "-msse2", "-msse3", "-Wall", "-fno-strict-aliasing"]),
     .unsafeFlags(["-fvisibility=hidden", "-Wdeclaration-after-statement", "-Werror=declaration-after-statement"]),
-    .unsafeFlags(["-I/home/linuxbrew/.linuxbrew/include/dbus-1.0"]),
-    .unsafeFlags(["-I/home/linuxbrew/.linuxbrew/lib/dbus-1.0/include"]),
+    .unsafeFlags(["-I/usr/include/dbus-1.0", "-I/usr/lib/dbus-1.0/include", "-I\(Context.packageDirectory)/gen"]),
 ]
 
 sdlConfig.lflags = [
@@ -162,6 +161,7 @@ sdlConfig.sourcePaths = [
     "src/audio/disk",
     "src/audio/dsp",
     "src/audio/dummy",
+    "src/audio/jack",
     "src/audio/pulseaudio",
     "src/audio/sndio",
     // find src/audio -name \*.c -depth 1 | sort -f | xargs -n 1 printf '"%s",\n'
@@ -187,6 +187,7 @@ sdlConfig.sourcePaths = [
     "src/joystick/steam",
     "src/joystick/virtual",
     // find src/joystick -name \*.c -depth 1 | sort -f | xargs -n 1 printf '"%s",\n'
+    "src/joystick/controller_type.c",
     "src/joystick/SDL_gamecontroller.c",
     "src/joystick/SDL_joystick.c",
     "src/libm",
@@ -239,9 +240,13 @@ sdlConfig.sourcePaths = [
     "src/SDL_assert.c",
     "src/SDL_dataqueue.c",
     "src/SDL_error.c",
+    "src/SDL_guid.c",
     "src/SDL_hints.c",
+    "src/SDL_list.c",
     "src/SDL_log.c",
+    "src/SDL_utils.c",
     "src/SDL.c",
+    "gen",
 ]
 
 #elseif os(Windows)
