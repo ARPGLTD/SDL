@@ -20,11 +20,12 @@ sdlConfig.cflags = [
     .define("SDL_VIDEO_OPENGL", to: "0"),
     .define("SDL_VIDEO_OPENGL_ES2", to: "0"), 
     .define("SDL_VIDEO_OPENGL_EGL", to: "0"),
-    .define("SDL_VIDEO_OPENGL_CGL", to: "0"),
+    .define("SDL_VIDEO_OPENGL_CGL", to: "1"),
     .define("SDL_VIDEO_OPENGL_GLX", to: "0"),
     .define("SDL_VIDEO_RENDER_OGL", to: "0"),
     .define("SDL_VIDEO_RENDER_OGL_ES2", to: "0"),
-    .unsafeFlags(["-x", "objective-c", "-fno-objc-arc"], .when(platforms: [.macOS])),
+    .define("SDL_VIDEO_DRIVER_COCOA", to: "1"),
+    // .unsafeFlags(["-x", "objective-c", "-fno-objc-arc"], .when(platforms: [.macOS])),
     .unsafeFlags(["-x", "objective-c", "-fobjc-weak"], .when(platforms: [.macOS])),
 ]
 
@@ -56,6 +57,7 @@ sdlConfig.sourcePaths = [
     "src/joystick/steam",
     "src/joystick/virtual",
     // find src/joystick -name \*.c -depth 1 | sort -f | xargs -n 1 printf '"%s",\n'
+    "src/joystick/controller_type.c",
     "src/joystick/SDL_gamecontroller.c",
     "src/joystick/SDL_joystick.c",
     "src/loadso/dlopen",
@@ -108,8 +110,11 @@ sdlConfig.sourcePaths = [
     "src/SDL_assert.c",
     "src/SDL_dataqueue.c",
     "src/SDL_error.c",
+    "src/SDL_guid.c",
     "src/SDL_hints.c",
+    "src/SDL_list.c",
     "src/SDL_log.c",
+    "src/SDL_utils.c",
     "src/SDL.c",
 ]
 
@@ -427,7 +432,7 @@ sdlConfig.cflags += [
     .unsafeFlags(["-Wno-everything"]),
 ]
 
-sdlConfig.excludePaths = [
+sdlConfig.excludePaths += [
     "src/hidapi/testgui",
 //    "Include/SDL_revision.h.cmake",
 //    "Include/SDL_config.h.in",
